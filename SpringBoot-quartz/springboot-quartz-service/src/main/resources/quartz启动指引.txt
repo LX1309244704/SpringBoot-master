@@ -1,0 +1,4 @@
+http://localhost:8003/job.html
+任务组只有2个
+	com.quartz.job.HelloJob
+	com.quartz.job.NewJob

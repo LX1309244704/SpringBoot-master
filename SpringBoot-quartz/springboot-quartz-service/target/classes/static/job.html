@@ -1,0 +1,232 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Access-Control-Allow-Origin" content="*" />
+<title>Insert title here</title>
+	<link rel="stylesheet" type="text/css" href="eaysui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="eaysui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="eaysui/demo/demo.css">
+	<script type="text/javascript" src="eaysui/jquery.min.js"></script>
+	<script type="text/javascript" src="eaysui/common.js"></script>
+	<script type="text/javascript" src="eaysui/jquery.easyui.min.js"></script>
+</head>
+ <script type="text/javascript">
+    	$(function(){
+    		$("#jobDialog").dialog("close");
+    		$("#jobSearchDialog").dialog("close");
+    		btnDisable();
+    		$("#jobDataGrid").datagrid({
+	    		url:"http://127.0.0.1:8003/job/datagrid",
+	    		frozenColumns:[[{field:"ck",checkbox:true}]],
+	    		striped 	: true,
+	    		fit			: true,
+	    		fitColumns	: true,
+	    		nowrap		: false,
+	    		pageList	: [10,20,50,100],
+	    		singleSelect: true,
+	    		rownumbers	: true,
+	    		pagination 	: true,
+	    		onCheck:function(index,row){
+	    			 if(row){
+	    				 btnEnable();
+	    			 }else{
+	    				 btnDisable();
+	    			 }
+	    		},
+	    		onClickRow:function(index,row){
+	    			 if(row){
+	    				 btnEnable();
+	    			 }else{
+	    				 btnDisable();
+	    			 }
+	    		}
+	    	});
+	    	
+	    	window.parent.$.messager.progress("close");
+    	});
+    	
+    	function btnEnable(){
+    		$("#btnJobReschedule").linkbutton("enable");
+			$("#btnJobDel").linkbutton("enable");
+			$("#btnJobPause").linkbutton("enable");
+	    	$("#btnJobResume").linkbutton("enable");
+    	}
+    	function btnDisable(){
+    		$("#btnJobReschedule").linkbutton("disable");
+    		$("#btnJobPause").linkbutton("disable");
+    		$("#btnJobResume").linkbutton("disable");
+			$("#btnJobDel").linkbutton("disable");
+    	}
+    	
+    	function loadAddJob(){
+   			$("#jobForm").form("clear");
+	    	loadDialog("jobDialog","添加任务","icon-task-add",false);
+	    	$("#enable").combobox("setValue",1);
+	    	$("#method").val("add");
+   		}
+    	
+   		function loadModJob(){
+   			var row = $("#jobDataGrid").datagrid("getSelected");
+   			if(row){
+	   			loadDialog("jobDialog","编辑任务","icon-task-mod",false);
+	   			$("#jobForm").form("load",row);
+	   			$("#method").val("reschedule");
+   			}else{
+   				loadShow("系统提示","请选择要编辑的任务!");
+   			}
+   		}
+    	
+    	function submitJobForm(){
+    		var method = $("#method").val();
+    		var url = "http://127.0.0.1:8003/job/" + method;
+	    	$.messager.progress();
+			$("#jobForm").form("submit", {   
+				url:url,
+				onSubmit: function(param){
+					var isValid = $(this).form("validate");
+					if (!isValid){
+						$.messager.progress("close");
+					}
+					return isValid;
+				},
+				success:function(data){
+					$.messager.progress("close");
+					var d = eval("("+data+")");
+					loadShow("系统提示",d.desc);
+					btnDisable();
+					$("#jobDialog").dialog("close");
+					$("#jobDataGrid").datagrid("reload");
+				}   
+			});
+    	}
+    	
+    	function delJob(){
+   			var row = $("#jobDataGrid").datagrid("getSelected");
+   			if(row){
+				$.messager.confirm("系统提示","<font color='red'>确定删除您所选中的任务吗？</font>",function(r){
+					if(r){
+						$.messager.progress();
+						btnDisable();
+						$.ajax({  
+							url:"${ctx}/quartz/job/del", 
+							type:"post",  
+							data:{jobClassName:row.jobClassName,jobGroupName:row.jobGroupName},
+							success:function(data){  
+								$("#jobDataGrid").datagrid("reload");
+								loadShow("系统提示",data.desc);
+								$.messager.progress("close");
+							}  
+						});
+					}
+				});
+   			}else{
+   				loadShow("系统提示","请选择要删除的任务!");
+   			}
+   		}
+    	
+    	function pauseJob(){
+    		var row = $("#jobDataGrid").datagrid("getSelected");
+   			if(row){
+				$.messager.confirm("系统提示","<font color='red'>确定暂停您所选中的任务吗？</font>",function(r){
+					if(r){
+						$.messager.progress();
+						$.ajax({  
+							url:"http://127.0.0.1:8003/job/pause", 
+							type:"post",  
+							data:{jobClassName:row.jobClassName,jobGroupName:row.jobGroupName},
+							success:function(data){  
+								$("#jobDataGrid").datagrid("reload");
+								loadShow("系统提示",data.desc);
+								$.messager.progress("close");
+								btnDisable();
+							}  
+						});
+					}
+				});
+   			}else{
+   				loadShow("系统提示","请选择要暂停的任务!");
+   			}
+    	}
+    	function resumeJob(){
+    		var row = $("#jobDataGrid").datagrid("getSelected");
+   			if(row){
+				$.messager.confirm("系统提示","<font color='red'>确定要恢复您所选中的任务吗？</font>",function(r){
+					if(r){
+						$.messager.progress();
+						$.ajax({  
+							url:"http://127.0.0.1:8003/job/resume", 
+							type:"post",  
+							data:{jobClassName:row.jobClassName,jobGroupName:row.jobGroupName},
+							success:function(data){  
+								$("#jobDataGrid").datagrid("reload");
+								loadShow("系统提示",data.desc);
+								$.messager.progress("close");
+								btnDisable();
+							}  
+						});
+					}
+				});
+   			}else{
+   				loadShow("系统提示","请选择要恢复的任务!");
+   			}
+    	}
+    	
+    	function formatterTiggerState(value,record){
+    		if(value=="WAITING") {return "<b><font color='red'>等待 </font></b>";}
+    		if(value=="PAUSED") {return "<b><font color='red'>暂停</font></b>";}
+    		if(value=="ACQUIRED") {return "<b><font color='green'>正常执行</font></b>";}
+    		if(value=="BLOCKED") {return "<b><font color='red'>阻塞</font></b>";}
+    		if(value=="ERROR") {return "<b><font color='red'>错误</font></b>";}
+    	}
+    </script>
+<body>
+	   	<div class="easyui-panel" data-options="fit:true,border:false">
+    	<div id="dataGridToolBar">
+		    	<a href="javascript:void(0);" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-task-add',plain:true" onclick="javascript:loadAddJob();" title="添加任务">添加</a>
+		    	<a href="javascript:void(0);"  id="btnJobReschedule" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-task-mod',plain:true" onclick="javascript:loadModJob();" title="编辑任务">编辑</a>
+		    	<a href="javascript:void(0);"  id="btnJobDel" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-task-del',plain:true" onclick="javascript:delJob();" title="删除任务">删除</a>
+		    	<a href="javascript:void(0);"  id="btnJobPause" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-control-pause',plain:true" onclick="javascript:pauseJob();" title="暂停任务">暂停</a>
+		    	<a href="javascript:void(0);"  id="btnJobResume" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-control-play',plain:true" onclick="javascript:resumeJob();" title="恢复任务">恢复</a>
+		</div>
+    	<table id="jobDataGrid" class="easyui-datagrid" data-options="toolbar:'#dataGridToolBar',border:false,sortName:'jobName',sortOrder:'desc'">
+			<thead>
+				<tr>
+					<th data-options="field:'jobName',width:150,sortable:true">任务名称</th>
+					<th data-options="field:'jobGroupName',width:60,align:'left',sortable:true">任务所在组</th>
+ 					<th data-options="field:'jobClassName',width:100,align:'left',sortable:true">任务类名</th> 
+					<th data-options="field:'triggerName',width:60,align:'left',sortable:true">触发器名称</th> 
+					<th data-options="field:'triggerGroupName',width:60,align:'left',sortable:true">触发器所在组</th> 
+					<th data-options="field:'cronExpression',width:80,align:'left',sortable:true">表达式</th>
+					<th data-options="field:'prevFireTime',width:80,align:'center',sortable:true">上次执行时间</th>
+					<th data-options="field:'nextFireTime',width:80,align:'center',sortable:true">下次执行时间</th>
+					<th data-options="field:'triggerState',width:40,align:'center',sortable:true,formatter:formatterTiggerState">状态</th>
+				</tr>
+			</thead>
+		</table>
+    </div>
+    
+    <div id="jobDialog" class="easyui-dialog" style="width:430px; height:250px;padding-top:4px;" data-options="buttons:'#dlg-buttons-job'">
+  		<form id="jobForm" method="post">
+  			<table class="tableForm" align="center">
+  				<tr>
+  					<input id="method" type="hidden" name="method">
+  					<th align="right">任务名称:</th>
+  					<td><input id="jobClassName" name="jobClassName" class="easyui-textbox" data-options="required:true" style="width:300px;"></td>
+  				</tr>
+  				<tr>
+  					<th align="right">任务所在组:</th>
+  					<td><input id="jobGroupName" name="jobGroupName" class="easyui-textbox" data-options="required:true" style="width:300px;"></td>
+  				</tr>
+  				<tr>
+  					<th align="right">表达式:</th>
+  					<td><input id="cronExpression" name="cronExpression" class="easyui-textbox" data-options="required:true,prompt:'0/5 * * * * ?'" style="width:300px;"></td>
+  				</tr>
+  			</table>
+  		</form>
+  		<div id="dlg-buttons-job" data-options="border:true">
+			<a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="javascript:submitJobForm();">保存</a>
+			<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#jobDialog').dialog('close');">关闭</a>
+		</div>
+  	</div>
+</body>
+</html>

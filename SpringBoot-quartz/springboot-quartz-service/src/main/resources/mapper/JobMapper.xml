@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
+<mapper namespace="com.quartz.mapper.JobAndTriggerMapper">  
+    
+    <select id="getJobAndTriggerDetails" resultType="com.quartz.dto.JobAndTriggerDto">
+			SELECT
+				jd.JOB_NAME AS jobName,
+				jd.DESCRIPTION AS jobDescription,
+				jd.JOB_GROUP AS jobGroupName,
+				jd.JOB_CLASS_NAME AS jobClassName,
+				t.TRIGGER_NAME AS triggerName,
+				t.TRIGGER_GROUP AS triggerGroupName,
+				FROM_UNIXTIME(t.PREV_FIRE_TIME/1000,'%Y-%m-%d %T') AS prevFireTime,
+				FROM_UNIXTIME(t.NEXT_FIRE_TIME/1000,'%Y-%m-%d %T') AS nextFireTime,
+				ct.CRON_EXPRESSION AS cronExpression,
+				t.TRIGGER_STATE AS triggerState
+			FROM
+				qrtz_job_details jd
+			JOIN qrtz_triggers t
+			JOIN qrtz_cron_triggers ct ON jd.JOB_NAME = t.JOB_NAME
+			AND t.TRIGGER_NAME = ct.TRIGGER_NAME
+			AND t.TRIGGER_GROUP = ct.TRIGGER_GROUP
+    </select>
+    
+    <select id="getJobAndTriggerDto" resultType="com.quartz.dto.JobAndTriggerDto">
+			SELECT
+				jd.JOB_NAME AS jobName,
+				jd.DESCRIPTION AS jobDescription,
+				jd.JOB_GROUP AS jobGroupName,
+				jd.JOB_CLASS_NAME AS jobClassName,
+				t.TRIGGER_NAME AS triggerName,
+				t.TRIGGER_GROUP AS triggerGroupName,
+				FROM_UNIXTIME(t.PREV_FIRE_TIME/1000,'%Y-%m-%d %T') AS prevFireTime,
+				FROM_UNIXTIME(t.NEXT_FIRE_TIME/1000,'%Y-%m-%d %T') AS nextFireTime,
+				ct.CRON_EXPRESSION AS cronExpression,
+				t.TRIGGER_STATE AS triggerState
+			FROM
+				qrtz_job_details jd
+			JOIN qrtz_triggers t
+			JOIN qrtz_cron_triggers ct ON jd.JOB_NAME = t.JOB_NAME
+			AND t.TRIGGER_NAME = ct.TRIGGER_NAME
+			AND t.TRIGGER_GROUP = ct.TRIGGER_GROUP
+    </select>
+    
+</mapper>
