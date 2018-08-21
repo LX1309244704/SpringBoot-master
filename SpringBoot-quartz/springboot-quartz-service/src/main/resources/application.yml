@@ -45,5 +45,5 @@ mybatis-plus:
 logging:
   file: quartz-service.log
   level:
-    com.paiye: debug     
+    com.quartz: debug     
     
