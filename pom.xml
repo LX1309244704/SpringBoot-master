@@ -16,5 +16,6 @@
   		<module>springboot-quartz</module>
   		<module>springboot-redis</module>
   		<module>springboot-swagger</module>
+  		<module>springBoot-rabbitmq</module>
   	</modules>
 </project>
