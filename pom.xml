@@ -17,5 +17,6 @@
   		<module>springboot-redis</module>
   		<module>springboot-swagger</module>
   		<module>springBoot-rabbitmq</module>
+  		<module>springboot-dubbo</module>
   	</modules>
 </project>
