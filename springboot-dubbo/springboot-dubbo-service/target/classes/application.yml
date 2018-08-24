@@ -39,5 +39,5 @@ mybatis:
 logging:
   file: springboot-dubbo-service.log
   level:
-    com.paiye: debug 
+    com.dubbo: debug 
   
