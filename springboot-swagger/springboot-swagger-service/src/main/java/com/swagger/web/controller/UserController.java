@@ -41,7 +41,7 @@ public class UserController {
 			@ApiParam(value = "角色名称", required = true) @RequestParam(value = "userName", required = true) String userName) {
 		try {
 			UserModel user = new UserModel();
-			user.setUserId(userId);
+			user.setUserId(Long.valueOf(userId));
 			user.setUserCode(userCode);
 			user.setUserName(userName);
 			userService.addUser(user);
