@@ -70,6 +70,9 @@ public class RedisTest {
 		System.out.println(JsonUtil.toJson(strings));
 		ListOperations<String, String> operations =  this.template.opsForList();
 			operations.leftPushAll("users",strings);
+			operations.leftPushAll("users1", JsonUtil.toJson(user),JsonUtil.toJson(user1),JsonUtil.toJson(user2));
+			List<User> list2=JsonUtil.toObjectList(User.class, redisService.get("2"));
+			System.out.println(list2);
 			System.out.println(operations.size("users"));
 	}
 	
