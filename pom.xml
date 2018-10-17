@@ -18,5 +18,6 @@
   		<module>springboot-swagger</module>
   		<module>springBoot-rabbitmq</module>
   		<module>springboot-dubbo</module>
+  		<module>springboot-async</module>
   	</modules>
 </project>
