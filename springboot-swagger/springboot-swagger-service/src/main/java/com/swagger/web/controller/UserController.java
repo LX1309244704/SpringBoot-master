@@ -33,8 +33,7 @@ public class UserController {
 	private @Autowired IUserService userService;
 
 	@ApiOperation(value = "添加")
-	@RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = {
-			MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE })
 	public @ResponseBody ResultEntity<String> addUser(
 			@ApiParam(value = "id", required = true) @RequestParam(value = "userId", required = true) Long userId,
 			@ApiParam(value = "角色编号", required = true) @RequestParam(value = "userCode", required = true) String userCode,
@@ -52,8 +51,7 @@ public class UserController {
 		return new ResultEntity<String>(ApiConst.CODE_FAIL, ApiConst.DESC_FAIL);
 	}
 	@ApiOperation(value = "查询")
-	@RequestMapping(value = "/getUser", method = RequestMethod.POST, produces = {
-			MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@RequestMapping(value = "/getUser", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE })
 	public @ResponseBody ResultEntity<List<UserModel>> getUser() {
 		try {
 			List<UserModel> list = userService.getUser();
