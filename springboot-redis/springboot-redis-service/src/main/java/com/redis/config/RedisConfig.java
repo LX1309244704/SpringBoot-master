@@ -40,6 +40,7 @@ public class RedisConfig extends CachingConfigurerSupport {
 				sb.append(target.getClass().getName());
 				sb.append(method.getName());
 				for (Object obj : params) {
+					//由于参数可能不同, 缓存的key也需要不一样
 					sb.append(obj.toString());
 				}
 				return sb.toString();
