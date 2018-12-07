@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.rabbitmq.api.IAmqpHelloService;
+import com.rabbitmq.util.QueueConstant;
 
 @Component
 public class AmqpServiceConsumer {
@@ -17,7 +18,7 @@ public class AmqpServiceConsumer {
 	    public AmqpServiceConsumer() {
 	    }
 
-	    @RabbitListener(queues = {"com.queue.notify.hello"})
+	    @RabbitListener(queues = QueueConstant.QUEUE_NOTIFY_HELLO)
 	    public void receiveSmsCodeQueue(String message) {
 	        this.logger.info("------hello：消费者处理消息------");
 	        this.logger.debug(message);

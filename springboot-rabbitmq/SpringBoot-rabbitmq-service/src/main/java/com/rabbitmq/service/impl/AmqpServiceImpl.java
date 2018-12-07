@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rabbitmq.api.IAmqpService;
+import com.rabbitmq.util.QueueConstant;
 
 @Service
 public class AmqpServiceImpl implements IAmqpService {
@@ -13,7 +14,7 @@ public class AmqpServiceImpl implements IAmqpService {
 
 	@Override
 	public void convertAndSend(String message) {
-		amqpTemplate.convertAndSend("com.queue.notify.hello", message);
+		amqpTemplate.convertAndSend(QueueConstant.QUEUE_NOTIFY_HELLO, message);
 	}
 
 }
