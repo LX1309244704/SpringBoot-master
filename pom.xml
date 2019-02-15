@@ -19,5 +19,6 @@
   		<module>springBoot-rabbitmq</module>
   		<module>springboot-dubbo</module>
   		<module>springboot-async</module>
+  		<module>springboot-kafka</module>
   	</modules>
 </project>
