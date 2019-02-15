@@ -14,7 +14,7 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       bootstrap-servers: 192.168.234.128:9092 #如果kafka启动错误，打开debug级别日志，出现Can't resolve address: flink:9092 的错误，需要在 windows下修改IP映射即可， C:\Windows\System32\drivers\etc\hosts, 192.168.234.128 flink。
     consumer:
-      group-id: applog   
+      group-id: test   
       auto-offset-reset: latest #（1）earliest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费；（2）latest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据 ；（3）none：topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
       enable-auto-commit:  true  #如果为true，消费者的偏移量将在后台定期提交。
       auto-commit-interval: 1000 #消费者偏移自动提交给Kafka的频率 （以毫秒为单位），默认值为5000
