@@ -23,7 +23,7 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       bootstrap-servers: 192.168.234.128:9092    
 logging:
-  file: kafkaDemo.log
+  file: kafka-service.log
   level:
 #    root: debug #开启dubug级别
     com.kafka: debug
