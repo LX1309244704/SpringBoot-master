@@ -1,9 +1,9 @@
+
+*.class
 *.log*
-*.settings
 */.apt*
 */.git/*
-*target
-*.class
+*/target
 .classpath
 .deployables
 .factorypath
@@ -11,4 +11,3 @@
 .project
 .svn
 _svn
-

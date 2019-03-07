@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.rabbitmq.util.QueueConstant;
 
+
 @Configuration
 public class RabbitExchangeConfig {
     @Autowired
