@@ -1,6 +1,7 @@
 package com.redis.config;
 
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,10 +13,12 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -51,8 +54,23 @@ public class RedisConfig extends CachingConfigurerSupport {
 	// 缓存管理器
 	@Bean
 	public CacheManager cacheManager() {
+		
+		// 设置序列化
+		RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+		Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
+		
+		RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+		.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(stringSerializer))
+        // value序列化方式
+        .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
+        .disableCachingNullValues()
+        // 缓存过期时间
+        .entryTtl(Duration.ofMinutes(5));
+		
 		RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder
-				.fromConnectionFactory(lettuceConnectionFactory);
+				.fromConnectionFactory(lettuceConnectionFactory)
+				.cacheDefaults(config)
+				.transactionAware();
 		@SuppressWarnings("serial")
 		Set<String> cacheNames = new HashSet<String>() {
 			{

@@ -1,0 +1,12 @@
+*.log*
+*.settings
+*/.apt*
+*/.git/*
+*/target
+.classpath
+.deployables
+.factorypath
+.git
+.project
+.svn
+_svn

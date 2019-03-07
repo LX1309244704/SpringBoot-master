@@ -117,9 +117,11 @@ public class RedisTest {
 		list.add(user);
 		list.add(user2);
 		
-		redisService.set("1", user.toString());
-		redisService.set("2", JsonUtil.toJson(list));
-		List<User> list2=JsonUtil.toObjectList(User.class, redisService.get("2"));
+		redisService.set("wangwu", JsonUtil.toJson(user));
+		redisService.set("zhangsan123", JsonUtil.toJson(list));
+		User get = JsonUtil.toObject(redisService.get("wangwu"), User.class);
+		List<User> list2=JsonUtil.toObjectList(User.class, redisService.get("zhangsan123"));
+		System.out.println(get);
 		System.out.println(list2);
 	}
 	

@@ -108,7 +108,7 @@
 						$.messager.progress();
 						btnDisable();
 						$.ajax({  
-							url:"${ctx}/quartz/job/del", 
+							url:"http://127.0.0.1:8003/job/del", 
 							type:"post",  
 							data:{jobClassName:row.jobClassName,jobGroupName:row.jobGroupName},
 							success:function(data){  
