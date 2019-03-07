@@ -85,8 +85,8 @@ public class JobAndTriggerImpl implements IJobAndTriggerService {
 	public void updateJob(String jobClassName, String jobGroupName, String cronExpression) throws Exception {
 		try {
 			TriggerKey triggerKey = TriggerKey.triggerKey(jobClassName, jobGroupName);
-			// 表达式调度构建器
-			CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
+			// 表达式调度构建器（动态修改后不立即执行）
+			CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression).withMisfireHandlingInstructionDoNothing();
 
 			CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 
