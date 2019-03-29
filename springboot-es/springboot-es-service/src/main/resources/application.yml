@@ -1,0 +1,16 @@
+server:
+  port: 8008
+
+spring:  
+  application:
+    name: elasticsearch
+  data:
+    elasticsearch:
+      cluster-name: my-application
+      cluster-nodes: localhost:9300
+      repositories:
+        enabled: true
+logging:
+  file: Springboot-es.log
+  level:
+    com.paiye: debug 
