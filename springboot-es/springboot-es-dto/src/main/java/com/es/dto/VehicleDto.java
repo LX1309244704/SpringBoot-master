@@ -16,14 +16,14 @@ public class VehicleDto implements Serializable {
 	@Id
 	private Long id;
 	
-	@Field(type = FieldType.Text)
+	@Field(type = FieldType.Text, fielddata=true)
 	private String carDriver;
 	
 	@Field(type = FieldType.Text)
 	private String carType;
 	
 	//1：ik_smart：做最粗粒度的拆分；2：ik_max_word：做最细粒度的拆分
-	@Field(type = FieldType.Text,analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+	@Field(type = FieldType.Text, fielddata=true, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
 	private String carName;
 	
 	@Field(type = FieldType.Text)

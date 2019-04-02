@@ -9,6 +9,7 @@ import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,10 +101,12 @@ public class VehicleTemplateServiceImpl implements VehicleTemplateService{
          * mustNot(QueryBuilders): NOT
          * should:                  : OR
          */
-        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("carDriver", "李四")).should(QueryBuilders.matchQuery("addressPointDto.name", "李四"));
+        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("carDriver", "张三"));
+        SortBuilder<?> sortBuilder1 = SortBuilders.fieldSort("addressPointDto.xjTime").order(SortOrder.DESC);//根据嵌套实体时间排序
 //        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("remark", "祖国"));
 //        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("name", "名字57")).mustNot(QueryBuilders.matchQuery("id", "43")).should(QueryBuilders.matchQuery("type", "类型36"));
-        NativeSearchQueryBuilder builder1 = new NativeSearchQueryBuilder().withQuery(queryBuilder).withFilter(builder).withPageable(PageRequest.of(0,50)).withSort(sortBuilder);
+        NativeSearchQueryBuilder builder1 = new NativeSearchQueryBuilder().withQuery(queryBuilder).withFilter(builder)
+        		.withPageable(PageRequest.of(0,50)).withSort(sortBuilder1);
         SearchQuery searchQuery = builder1.build();
  
         //queryForList默认是分页，走的是queryForPage，默认10个

@@ -1,6 +1,7 @@
 package com.es;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ import com.es.dto.VehicleDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ElasticSearchApplication.class)
-public class elasticsearchTest {
+public class elasticsearchTest extends Thread{
 	
 	@Autowired
     private VehicleService vehicleService;
@@ -35,6 +36,13 @@ public class elasticsearchTest {
     private VehicleTemplateService vehicleTemplateService;
 	
 	
+	/** 
+	* @Title: queryGeos 
+	* @Description: TODO(查询数据) 
+	* @param   参数说明 
+	* @return void    返回类型 
+	* @throws 
+	*/
 	@Test
     public void queryGeos(){
 		double lat = 39.929986;
@@ -43,45 +51,52 @@ public class elasticsearchTest {
         System.out.println(list);
 	}
 	
+	/** 
+	* @Title: bulkIndex 
+	* @Description: TODO(添加数据) 
+	* @param @throws InterruptedException  参数说明 
+	* @return void    返回类型 
+	* @throws 
+	*/
 	@Test
-    public void bulkIndex(){
+    public void bulkIndex() throws InterruptedException{
 		List<VehicleDto> list = new ArrayList<>();
-    	double lat = 39.929986;
-        double lon = 116.395645;
-    	List<AddressPointDto> addressPointDto = new ArrayList<>();
-        for (int i = 1 ; i < 10; i++) {
-            double max = 0.00001;
-            double min = 0.000001;
-            Random random = new Random();
-            double s = random.nextDouble() % (max - min + 1) + max;
-            DecimalFormat df = new DecimalFormat("######0.000000");
-            // System.out.println(s);
-            String lons = df.format(s + lon);
-            String lats = df.format(s + lat);
-            Double dlon = Double.valueOf(lons);
-            Double dlat = Double.valueOf(lats);
- 
-            AddressPointDto person = new AddressPointDto();
-            person.setId(Long.valueOf(i));
-            person.setName("李四" + i);
-            person.setType("类型" + i);
-            person.setXjTime(new Date());
-            if(i%2 == 0) {
-            	person.setRemark("我爱中国，我爱祖国"+i);
-            }
-            if(i%3 == 0) {
-            	person.setRemark("我不爱美国，我爱祖国"+i);
-            }else{
-            	person.setRemark("我不爱日本，我爱祖国"+i);
-            }
-            
-            person.setAddress(new GeoPoint(dlat,dlon));
-            addressPointDto.add(person);
-        }
+	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
     	for (int j = 0; j < 10; j++) {
+    		double lat = 39.929986;
+            double lon = 116.395645;
+        	List<AddressPointDto> addressPointDto = new ArrayList<>();
+            for (int i = 1 ; i < 10; i++) {
+                double max = 0.00001;
+                double min = 0.000001;
+                Random random = new Random();
+                double s = random.nextDouble() % (max - min + 1) + max;
+                DecimalFormat df = new DecimalFormat("######0.000000");
+                String lons = df.format(s + lon);
+                String lats = df.format(s + lat);
+                Double dlon = Double.valueOf(lons);
+                Double dlat = Double.valueOf(lats);
+     
+                AddressPointDto person = new AddressPointDto();
+                person.setId(Long.valueOf(i));
+                person.setName("李四" + random.nextInt(100));
+                person.setType(random.nextInt(100)+"");
+                person.setXjTime(String.valueOf(ft.format(new Date())));
+                if(i%2 == 0) {
+                	person.setRemark("我爱中国，我爱祖国"+random.nextInt(100));
+                }
+                if(i%3 == 0) {
+                	person.setRemark("我不爱美国，我爱祖国"+random.nextInt(100));
+                }else{
+                	person.setRemark("我不爱日本，我爱祖国"+random.nextInt(100));
+                }
+                person.setAddress(new GeoPoint(dlat,dlon));
+                addressPointDto.add(person);
+                sleep(1000);
+            }
     		VehicleDto vehicleDto = new VehicleDto();
     		vehicleDto.setId(Long.valueOf(j));
-        	vehicleDto.setCarDriver("李四"+j);
+        	vehicleDto.setCarDriver("张三"+j);
         	vehicleDto.setCarName(j+".2米");
         	vehicleDto.setCarType(j+"");
         	vehicleDto.setPrice(j*1000);
@@ -140,6 +155,7 @@ public class elasticsearchTest {
      */
     @Test
     public void createIndex(){
+    	SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
     	List<VehicleDto> list = new ArrayList<>();
     	double lat = 39.929986;
         double lon = 116.395645;
@@ -160,7 +176,7 @@ public class elasticsearchTest {
             person.setId(Long.valueOf(i));
             person.setName("张三" + i);
             person.setType("类型" + i);
-            person.setXjTime(new Date());
+            person.setXjTime(String.valueOf(ft.format(new Date())));
             if(i%2 == 0) {
             	person.setRemark("我爱中国，我爱祖国"+i);
             }
