@@ -1,7 +1,9 @@
 package com.quartz.service.impl;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
@@ -57,28 +59,61 @@ public class JobAndTriggerImpl implements IJobAndTriggerService {
 	@Override
 	public void addJob(String jobClassName, String jobGroupName, String cronExpression) throws Exception {
 		// 启动调度器
-				scheduler.start();
+		scheduler.start();
 
-				// 构建job信息
-				JobDetail jobDetail = JobBuilder.newJob(getClass(jobClassName).getClass())
-						.withIdentity(jobClassName, jobGroupName).build();
+		// 构建job信息
+		JobDetail jobDetail = JobBuilder.newJob(getClass(jobClassName).getClass())
+				.withIdentity(jobClassName, jobGroupName).build();
 
-				// 表达式调度构建器(即任务执行的时间)
-				CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
+		// 表达式调度构建器(即任务执行的时间)
+		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
 
-				// 按新的cronExpression表达式构建一个新的trigger
-				CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobClassName, jobGroupName)
-						.withSchedule(scheduleBuilder).build();
+		// 按新的cronExpression表达式构建一个新的trigger
+		CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobClassName, jobGroupName)
+				.withSchedule(scheduleBuilder).build();
 
-				try {
-					scheduler.scheduleJob(jobDetail, trigger);
-					System.out.println("创建定时任务成功");
+		try {
+			scheduler.scheduleJob(jobDetail, trigger);
+			System.out.println("创建定时任务成功");
 
-				} catch (SchedulerException e) {
-					System.out.println("创建定时任务失败" + e);
-					throw new Exception("创建定时任务失败");
-				}
+		} catch (SchedulerException e) {
+			System.out.println("创建定时任务失败" + e);
+			throw new Exception("创建定时任务失败");
+		}
 		
+	}
+	
+	@Override
+	public void addJob(String jobClassName, String jobGroupName, String cronExpression, String jobDescription,
+			Map<String, Object> params) throws Exception {
+		
+		// 启动调度器
+		scheduler.start();
+		
+		// 构建job信息
+        JobDetail jobDetail = JobBuilder.newJob(JobAndTriggerImpl.getClass(jobClassName).getClass())
+        		.withIdentity(jobClassName, jobGroupName).withDescription(jobDescription).build();
+        Iterator<Entry<String, Object>> var7 = params.entrySet().iterator();
+        while(var7.hasNext()) {
+            Entry<String, Object> entry = var7.next();
+            jobDetail.getJobDataMap().put((String)entry.getKey(), entry.getValue());
+        }
+        System.out.println("jobDetail数据：--------"+jobDetail.toString());
+        // 表达式调度构建器(即任务执行的时间)
+        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
+        
+        // 按新的cronExpression表达式构建一个新的trigger
+        CronTrigger trigger = (CronTrigger)TriggerBuilder.newTrigger().withIdentity(jobClassName, jobGroupName)
+        		.withSchedule(scheduleBuilder).build();
+        
+        try {
+			scheduler.scheduleJob(jobDetail, trigger);
+			System.out.println("创建定时任务成功");
+
+		} catch (SchedulerException e) {
+			System.out.println("创建定时任务失败" + e);
+			throw new Exception("创建定时任务失败");
+		}
 	}
 
 	@Override

@@ -1,7 +1,11 @@
 package com.quartz;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,20 @@ public class QuartzCase {
 	private @Autowired IJobAndTriggerService jobAndTriggerService;
 	
 	@Test
+	public void addNewJob() throws Exception {
+//		DateTimeFormatter format = DateTimeFormat.forPattern("ss mm HH dd MM ? yyyy");
+		String jobClassName = "com.quartz.job.MyJob";
+		String jobGroupName = "test-13999999999";
+//		String cronExpression = DateTime.now().plusHours(1).toString(format);
+		String cronExpression = "0/5 * * * * ?";
+		String jobDescription = "动态任务";
+		Map<String, Object> params = new HashMap<>();
+		params.put("张三", "13999999999");
+		System.out.println(cronExpression);
+		jobAndTriggerService.addJob(jobClassName, jobGroupName, cronExpression, jobDescription, params);
+	}
+	
+	@Test
 	public void addJob() throws Exception {
 		String jobClassName = "com.quartz.job.NewJob";
 		String jobGroupName = "2";
@@ -45,8 +63,8 @@ public class QuartzCase {
 	
 	@Test
 	public void delJob() throws Exception {
-		String jobClassName = "com.quartz.job.NewJob";
-		String jobGroupName = "2";
+		String jobClassName = "com.quartz.job.MyJob";
+		String jobGroupName = "test-18302859601";
 		jobAndTriggerService.deleteJob(jobClassName, jobGroupName);
 	}
 	

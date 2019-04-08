@@ -46,6 +46,20 @@ public interface IJobAndTriggerService {
 	*/ 
 	public void addJob(String jobClassName, String jobGroupName, String cronExpression) throws Exception;
 	
+	/** 
+	* @Title: addJob 
+	* @Description: TODO(添加动态任务) 
+	* @param @param jobClassName 任务路径名称
+	* @param @param jobGroupName 任务分组
+	* @param @param cronExpression cron时间规则
+	* @param @param jobDescription 参数 
+	* @param @param params
+	* @param @throws Exception  参数说明 
+	* @return void    返回类型 
+	* @throws 
+	*/
+	public void addJob(String jobClassName, String jobGroupName, String cronExpression, String jobDescription, Map<String, Object> params) throws Exception;
+	
 	/**  
 	* @Title: updateJob  
 	* @Description: TODO(更新定时任务)  
