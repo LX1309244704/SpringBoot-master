@@ -92,7 +92,7 @@ public class elasticsearchTest extends Thread{
                 }
                 person.setAddress(new GeoPoint(dlat,dlon));
                 addressPointDto.add(person);
-                sleep(1000);
+//                sleep(1000);
             }
     		VehicleDto vehicleDto = new VehicleDto();
     		vehicleDto.setId(Long.valueOf(j));

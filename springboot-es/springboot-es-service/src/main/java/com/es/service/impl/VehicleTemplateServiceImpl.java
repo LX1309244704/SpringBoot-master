@@ -103,6 +103,7 @@ public class VehicleTemplateServiceImpl implements VehicleTemplateService{
          */
         QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("carDriver", "张三"));
         SortBuilder<?> sortBuilder1 = SortBuilders.fieldSort("addressPointDto.xjTime").order(SortOrder.DESC);//根据嵌套实体时间排序
+//        FieldSortBuilder fieldSortBuilder = SortBuilders.fieldSort("addressPointDto.xjTime").order(SortOrder.DESC).setNestedPath("dealInfos").setNestedFilter(QueryBuilders.matchQuery("addressPointDto.id", "1"));//低版本使用
 //        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("remark", "祖国"));
 //        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("name", "名字57")).mustNot(QueryBuilders.matchQuery("id", "43")).should(QueryBuilders.matchQuery("type", "类型36"));
         NativeSearchQueryBuilder builder1 = new NativeSearchQueryBuilder().withQuery(queryBuilder).withFilter(builder)
