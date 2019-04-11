@@ -23,6 +23,7 @@ import com.es.api.VehicleService;
 import com.es.api.VehicleTemplateService;
 import com.es.dto.AddressPointDto;
 import com.es.dto.VehicleDto;
+import com.es.util.EsIndexChange;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ElasticSearchApplication.class)
@@ -60,6 +61,8 @@ public class elasticsearchTest extends Thread{
 	*/
 	@Test
     public void bulkIndex() throws InterruptedException{
+		EsIndexChange esIndexChange = new EsIndexChange();
+		esIndexChange.setSuffix("ceshi");
 		List<VehicleDto> list = new ArrayList<>();
 	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
     	for (int j = 0; j < 10; j++) {
