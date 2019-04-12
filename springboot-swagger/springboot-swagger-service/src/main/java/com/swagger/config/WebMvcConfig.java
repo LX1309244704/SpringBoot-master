@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.unit.DataSize;
+import org.springframework.util.unit.DataUnit;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -23,7 +25,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 	
-	private static Logger logger = LoggerFactory.getLogger(SwaggerCommandLineRunner.class);
+	private static Logger logger = LoggerFactory.getLogger(WebMvcConfig.class);
 
 	/* (非 Javadoc)
 	* <p>Title: addCorsMappings</p>
@@ -49,8 +51,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		@Bean
 		public MultipartConfigElement multipartConfigElement() {
 			MultipartConfigFactory factory = new MultipartConfigFactory();
-			factory.setMaxFileSize("102400KB");
-			factory.setMaxRequestSize("112400KB");
+			factory.setMaxFileSize(DataSize.of(102400, DataUnit.KILOBYTES));
+			factory.setMaxRequestSize(DataSize.of(112400, DataUnit.KILOBYTES));
 			return factory.createMultipartConfig();
 		}
 }
