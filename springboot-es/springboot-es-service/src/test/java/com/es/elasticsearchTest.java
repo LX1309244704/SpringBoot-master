@@ -46,6 +46,10 @@ public class elasticsearchTest extends Thread{
 	*/
 	@Test
     public void queryGeos(){
+		EsIndexChange esIndexChange = new EsIndexChange();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    String env = sdf.format(new Date());
+		esIndexChange.setSuffix(env);
 		double lat = 39.929986;
         double lon = 116.395645;
         List<VehicleDto> list = vehicleTemplateService.queryForList(lat, lon);
@@ -62,7 +66,9 @@ public class elasticsearchTest extends Thread{
 	@Test
     public void bulkIndex() throws InterruptedException{
 		EsIndexChange esIndexChange = new EsIndexChange();
-		esIndexChange.setSuffix("ceshi");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    String env = sdf.format(new Date());
+		esIndexChange.setSuffix(env);
 		List<VehicleDto> list = new ArrayList<>();
 	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
     	for (int j = 0; j < 10; j++) {

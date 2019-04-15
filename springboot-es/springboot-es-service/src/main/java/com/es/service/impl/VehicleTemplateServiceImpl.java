@@ -37,7 +37,7 @@ public class VehicleTemplateServiceImpl implements VehicleTemplateService{
         elasticsearchTemplate.putMapping(VehicleDto.class);
         for (VehicleDto vehiclePointEsDto : vehicleDto) {
             IndexQuery indexQuery = new IndexQuery();
-            indexQuery.setId(vehiclePointEsDto.getId() + "");
+            indexQuery.setId("M"+vehiclePointEsDto.getId());
                 indexQuery.setObject(vehiclePointEsDto);
                 //上面的那几步也可以使用IndexQueryBuilder来构建
                 //IndexQuery index = new IndexQueryBuilder().withId(VehiclePointEsDto.getId() + "").withObject(VehicleDto).build();
@@ -69,7 +69,7 @@ public class VehicleTemplateServiceImpl implements VehicleTemplateService{
 		Long nowTime = System.currentTimeMillis();
         //查询某经纬度10000米范围内
         GeoDistanceQueryBuilder builder = QueryBuilders.geoDistanceQuery("addressPointDto.address").point(lat, lon)
-                .distance(10000, DistanceUnit.METERS);
+                .distance(100000, DistanceUnit.METERS);
        
         GeoDistanceSortBuilder sortBuilder = SortBuilders
 //        		.geoDistanceSort("address")
