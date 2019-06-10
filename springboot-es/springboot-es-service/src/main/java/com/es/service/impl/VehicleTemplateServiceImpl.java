@@ -101,7 +101,10 @@ public class VehicleTemplateServiceImpl implements VehicleTemplateService{
          * mustNot(QueryBuilders): NOT
          * should:                  : OR
          */
-        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("carDriver", "张三"));
+        /**
+         * boost评分
+         */
+        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("carDriver", "张三")).should(QueryBuilders.matchQuery("carType", "7").boost(100));
         SortBuilder<?> sortBuilder1 = SortBuilders.fieldSort("addressPointDto.xjTime").order(SortOrder.DESC);//根据嵌套实体时间排序
 //        FieldSortBuilder fieldSortBuilder = SortBuilders.fieldSort("addressPointDto.xjTime").order(SortOrder.DESC).setNestedPath("dealInfos").setNestedFilter(QueryBuilders.matchQuery("addressPointDto.id", "1"));//低版本使用
 //        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("remark", "祖国"));
