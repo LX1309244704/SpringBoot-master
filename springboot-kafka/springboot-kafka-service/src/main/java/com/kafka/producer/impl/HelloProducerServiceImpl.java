@@ -31,8 +31,8 @@ public class HelloProducerServiceImpl implements HelloProducerService{
 	@Override
 	public void sendSyncHello(String helloQueue, String message) throws InterruptedException, ExecutionException {
 		logger.debug("发送同步信息");
-		kafkaTemplate.send("app_log", message).get();
 		try {
+			kafkaTemplate.send("app_log", message).get();
 			Thread.sleep(1000L);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
