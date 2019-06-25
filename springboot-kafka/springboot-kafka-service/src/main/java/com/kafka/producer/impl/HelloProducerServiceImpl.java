@@ -1,5 +1,7 @@
 package com.kafka.producer.impl;
 
+import java.util.concurrent.ExecutionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +29,9 @@ public class HelloProducerServiceImpl implements HelloProducerService{
     private KafkaTemplate<String, String> kafkaTemplate;
 
 	@Override
-	public void sendSyncHello(String helloQueue, String message) {
+	public void sendSyncHello(String helloQueue, String message) throws InterruptedException, ExecutionException {
 		logger.debug("发送同步信息");
-		kafkaTemplate.send("app_log", message);
+		kafkaTemplate.send("app_log", message).get();
 		try {
 			Thread.sleep(1000L);
 		} catch (InterruptedException e) {
@@ -40,7 +42,7 @@ public class HelloProducerServiceImpl implements HelloProducerService{
 
 	@Override
 	public void sendAsyncHello(String helloQueue, String message) {
-		logger.debug("发送异步信息");
+		logger.debug("发送回调异步信息");
     	ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send("app_log1", message);
     	future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
             @Override

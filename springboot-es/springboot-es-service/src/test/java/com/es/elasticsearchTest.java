@@ -53,6 +53,7 @@ public class elasticsearchTest extends Thread{
 		double lat = 39.929986;
         double lon = 116.395645;
         List<VehicleDto> list = vehicleTemplateService.queryForList(lat, lon);
+        System.out.println(list.size());
         System.out.println(list);
 	}
 	
@@ -71,7 +72,7 @@ public class elasticsearchTest extends Thread{
 		esIndexChange.setSuffix(env);
 		List<VehicleDto> list = new ArrayList<>();
 	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
-    	for (int j = 0; j < 10; j++) {
+    	for (int j = 0; j < 500; j++) {
     		double lat = 39.929986;
             double lon = 116.395645;
         	List<AddressPointDto> addressPointDto = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.kafka;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ public class KafkaCase {
     private HelloProducerService helloProducerService;
 	
 	@Test
-	public void sendSyncTest() {
+	public void sendSyncTest() throws InterruptedException, ExecutionException {
 		for (int i = 0; i < 1; i++) {
 			 String message = UUID.randomUUID().toString();
 		     System.out.println("发送消息:"+i);

@@ -1,5 +1,7 @@
 package com.kafka.api;
 
+import java.util.concurrent.ExecutionException;
+
 /**
 * @ClassName: HelloProducerService
 * @Description: TODO(Producer接口)
@@ -9,7 +11,9 @@ package com.kafka.api;
 */
 public interface HelloProducerService {
 	
-	/** 
+	/**
+	 * @throws ExecutionException 
+	 * @throws InterruptedException  
 	* @Title: sendSyncHello 
 	* @Description: TODO(同步发送) 
 	* @param @param helloQueue
@@ -17,7 +21,7 @@ public interface HelloProducerService {
 	* @return void    返回类型 
 	* @throws 
 	*/
-	public void sendSyncHello(String helloQueue,String message);
+	public void sendSyncHello(String helloQueue,String message) throws InterruptedException, ExecutionException;
 	
 	/** 
 	* @Title: sendAsyncHello 
