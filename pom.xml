@@ -21,5 +21,6 @@
   		<module>springboot-async</module>
   		<module>springboot-kafka</module>
   		<module>springboot-es</module>
+  		<module>springboot-dubbo-nacos</module>
   	</modules>
 </project>

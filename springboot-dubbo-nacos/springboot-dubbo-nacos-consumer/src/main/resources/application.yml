@@ -1,0 +1,22 @@
+server:
+    port: 8002
+
+spring:  
+  application:
+    name: dubbo-consumer
+  profiles: 
+    active: dev
+      
+dubbo: 
+  application:
+    name: dubbo-consumer
+  registry:
+    address: nacos://127.0.0.1:8848        
+    
+    
+    
+        
+logging:
+  file: dubbo-consumer.log
+  level:
+    com.dubbo.consumer: debug 

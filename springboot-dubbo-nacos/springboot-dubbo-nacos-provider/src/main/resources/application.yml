@@ -1,0 +1,25 @@
+server:
+    port: 8001
+
+spring:  
+  application:
+    name: dubbo-provider
+  profiles: 
+    active: dev
+      
+dubbo: 
+  application:
+    name: dubbo-provider
+  registry:
+    address: nacos://127.0.0.1:8848        
+  protocol:
+    name: dubbo
+    port: -1
+    
+    
+    
+        
+logging:
+  file: com.dubbo.provider.log
+  level:
+    com.dubbo.provider: debug 
