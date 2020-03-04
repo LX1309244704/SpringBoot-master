@@ -12,7 +12,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<mybatisplus.version>2.1.4</mybatisplus.version>
-		<jackson.version>2.9.4</jackson.version>
+		<jackson.version>2.10.3</jackson.version>
 	</properties>
 
 	<dependencies>
